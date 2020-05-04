@@ -1,0 +1,187 @@
+<form class="container form-group mt-1" [formGroup]="formulario">
+  <div class="form-row">
+    <h3 class="col">Cadastro de Vendas</h3>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="bandeira">Bandeira</label>
+
+      <input
+        formControlName="bandeira"
+        id="bandeira"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['bandeira'].status == 'INVALID'
+        }"
+      />
+      <div
+        *ngIf="submeter && formulario.controls['bandeira'].status == 'INVALID'"
+      >
+        A bandeira é obrigatório
+      </div>
+    </div>
+
+    <div class="form-group col">
+      <label for="dataColeta">Data da Coleta</label>
+
+      <input
+        type="text"
+        class="form-control"
+        formControlName="dataColeta"
+        placeholder="yyyy-MM-ddThh:mm:ss"
+        minlength="19"
+        maxlength="19"
+        ngMask="9999-99-99T99:99:99"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['dataColeta'].status == 'INVALID'
+        }"
+        id="dataColeta"
+      />
+      <div
+        *ngIf="
+          submeter && formulario.controls['dataColeta'].status == 'INVALID'
+        "
+      >
+        A data da coleta é obrigatório
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="form-group col">
+      <label for="valorCompra">Valor da Compra</label>
+
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['valorCompra'].status == 'INVALID'
+        }"
+        maxlength="5"
+        ngMask="9.99"
+        formControlName="valorCompra"
+        id="valorCompra"
+      />
+
+      <div
+        *ngIf="
+          submeter && formulario.controls['valorCompra'].status == 'INVALID'
+        "
+      >
+        O valor da compra é obrigatório
+      </div>
+    </div>
+
+    <div class="form-group col">
+      <label for="valorVenda">Valor da Venda</label>
+
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['valorVenda'].status == 'INVALID'
+        }"
+        maxlength="5"
+        ngMask="9.99"
+        formControlName="valorVenda"
+        id="valorVenda"
+      />
+      <div
+        *ngIf="
+          submeter && formulario.controls['valorVenda'].status == 'INVALID'
+        "
+      >
+        Valor da venda é obrigatório
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="form-group col">
+      <label for="clienteId">Cliente</label>
+      <ngx-select
+        [items]="listaClientes"
+        allowClear="true"
+        optionValueField="id"
+        optionTextField="nome"
+        formControlName="clienteId"
+        id="clienteId"
+      ></ngx-select>
+    </div>
+
+    <div class="form-group col">
+      <label for="produtoId">Produto</label>
+      <ngx-select
+        [items]="listaProdutos"
+        allowClear="true"
+        optionValueField="id"
+        optionTextField="nome"
+        formControlName="produtoId"
+        id="produtoId"
+      ></ngx-select>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <div class="text-center">
+      <button class="btn btn-primary mr-1" (click)="persistirDados()">
+        <span *ngIf="!formulario.controls['id'].value">Cadastrar</span>
+        <span *ngIf="formulario.controls['id'].value">Editar</span>
+      </button>
+      <button class="btn btn-secondary" type="reset" (click)="limpar()">
+        Limpar
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Bandeira</th>
+        <th scope="col">Data Coleta</th>
+        <th scope="col">Valor Compra</th>
+        <th scope="col">Valor Venda</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Produto</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of items | paginate: config">
+        <th scope="row">{{ c.id }}</th>
+        <td>{{ c.bandeira }}</td>
+        <td>{{ c.dataColeta }}</td>
+        <td>{{ c.valorCompra }}</td>
+        <td>{{ c.valorVenda }}</td>
+        <td>{{ c.cliente.nome }}</td>
+        <td>{{ c.produto.nome }}</td>
+        <td style="display: flex;">
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm mr-2"
+            (click)="editarItem(c)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="excluirItem(c)"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center">
+  <pagination-controls (pageChange)="mudarPagina($event)"></pagination-controls>
+</div>

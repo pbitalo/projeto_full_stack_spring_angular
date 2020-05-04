@@ -1,0 +1,53 @@
+<div class="wrapper fadeInDown">
+  <div id="login-body">
+    <img
+      class="img-fluid mt-3 mb-3"
+      src="/assets/imgs/logo_indra.jpg"
+      alt="indracompany"
+    />
+
+    <form [formGroup]="formulario">
+      <input
+        type="text"
+        class="form-control"
+        formControlName="name"
+        placeholder="Digite um nome"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['name'].status == 'INVALID'
+        }"
+      />
+      <div *ngIf="submeter && formulario.controls['name'].status == 'INVALID'">
+        O nome é obrigatório
+      </div>
+
+      <input
+        type="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="Digite a senha"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['password'].status == 'INVALID'
+        }"
+        id="password"
+      />
+      <div
+        *ngIf="submeter && formulario.controls['password'].status == 'INVALID'"
+      >
+        A senha é obrigatória e tamanho maior ou igual a 6
+      </div>
+      <div *ngIf="submeter && credenciais === 'falhou'">
+        Credenciais inválidas
+      </div>
+    </form>
+
+    <button type="button" class="btn btn-primary mt-3 mb-4" (click)="login()">
+      Entrar
+    </button>
+
+    <div id="login-footer">
+      <a class="underlineHover">Forgot Password?</a>
+    </div>
+  </div>
+</div>

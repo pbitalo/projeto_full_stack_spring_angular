@@ -1,0 +1,12 @@
+<p-menubar [model]="items" *ngIf="!eLogin">
+  <button
+    pButton
+    label="Logout"
+    icon="pi pi-power-off"
+    (click)="logout()"
+  ></button>
+</p-menubar>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

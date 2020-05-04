@@ -1,0 +1,171 @@
+<form class="container form-group mt-1" [formGroup]="formulario">
+  <div class="form-row">
+    <h3 class="col">Cadastro de Clientes</h3>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="nome">Nome</label>
+
+      <input
+        formControlName="nome"
+        id="nome"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['nome'].status == 'INVALID'
+        }"
+      />
+      <div *ngIf="submeter && formulario.controls['nome'].status == 'INVALID'">
+        O nome é obrigatório
+      </div>
+    </div>
+
+    <div class="form-group col">
+      <label for="instalacaoCodigo">Código de Instalação</label>
+
+      <input
+        type="number"
+        class="form-control"
+        formControlName="instalacaoCodigo"
+        [ngClass]="{
+          'is-invalid':
+            submeter &&
+            formulario.controls['instalacaoCodigo'].status == 'INVALID'
+        }"
+        id="instalacaoCodigo"
+      />
+      <div
+        *ngIf="
+          submeter &&
+          formulario.controls['instalacaoCodigo'].status == 'INVALID'
+        "
+      >
+        O código de instalação é obrigatório
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="form-group col">
+      <label for="siglaRegiao">Sigla da Regiao</label>
+
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['siglaRegiao'].status == 'INVALID'
+        }"
+        formControlName="siglaRegiao"
+        id="siglaRegiao"
+      />
+      <div
+        *ngIf="
+          submeter && formulario.controls['siglaRegiao'].status == 'INVALID'
+        "
+      >
+        Sigla da região é obrigatória
+      </div>
+    </div>
+
+    <div class="form-group col">
+      <label for="siglaEstado">Sigla do Estado</label>
+
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['siglaEstado'].status == 'INVALID'
+        }"
+        formControlName="siglaEstado"
+        id="siglaEstado"
+      />
+      <div
+        *ngIf="
+          submeter && formulario.controls['siglaEstado'].status == 'INVALID'
+        "
+      >
+        Sigla do estado é obrigatório
+      </div>
+    </div>
+
+    <div class="w-100"></div>
+
+    <div class="form-group col">
+      <label for="municipio">Município</label>
+
+      <input
+        class="form-control"
+        [ngClass]="{
+          'is-invalid':
+            submeter && formulario.controls['municipio'].status == 'INVALID'
+        }"
+        formControlName="municipio"
+        id="municipio"
+      />
+      <div
+        *ngIf="submeter && formulario.controls['municipio'].status == 'INVALID'"
+      >
+        O município é obrigatório
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <div class="text-center">
+      <button class="btn btn-primary mr-1" (click)="persistirDados()">
+        <span *ngIf="!formulario.controls['id'].value">Cadastrar</span>
+        <span *ngIf="formulario.controls['id'].value">Editar</span>
+      </button>
+      <button class="btn btn-secondary" type="reset" (click)="limpar()">
+        Limpar
+      </button>
+    </div>
+  </div>
+</form>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Cod Instalação</th>
+        <th scope="col">Município</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Sigla Estado</th>
+        <th scope="col">Sigla Região</th>
+        <th scope="col" class="mw-110"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of items | paginate: config">
+        <th>{{ c.id }}</th>
+        <td>{{ c.instalacaoCodigo }}</td>
+        <td>{{ c.municipio }}</td>
+        <td>{{ c.nome }}</td>
+        <td>{{ c.siglaEstado }}</td>
+        <td>{{ c.siglaRegiao }}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm mr-2"
+            (click)="editarItem(c)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="excluirItem(c)"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center">
+  <pagination-controls (pageChange)="mudarPagina($event)"></pagination-controls>
+</div>

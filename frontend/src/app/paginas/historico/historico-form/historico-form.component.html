@@ -1,0 +1,52 @@
+<div class="container form-group mt-1" [formGroup]="formulario">
+  <div class="form-row">
+    <h3 class="col">Histórico de Preço dos Produtos</h3>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="produtoId">Produto</label>
+      <ngx-select
+        [items]="listaProdutos"
+        allowClear="true"
+        optionValueField="id"
+        optionTextField="nome"
+        formControlName="produtoId"
+        id="produtoId"
+      ></ngx-select>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button class="btn btn-primary mr-1" (click)="filtrarDados(true)">
+      Filtrar
+    </button>
+  </div>
+</div>
+
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Data</th>
+        <th scope="col">Valor Venda</th>
+        <th scope="col">Produto</th>
+        <th scope="col">Unidade Medida</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let hist of items | paginate: config">
+        <th scope="row">{{ hist.dataColeta }}</th>
+        <td>{{ hist.valorVenda }}</td>
+        <td>{{ hist.produto.nome }}</td>
+        <td>{{ hist.produto.unidadeMedida }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="text-center">
+  <pagination-controls (pageChange)="mudarPagina($event)"></pagination-controls>
+</div>

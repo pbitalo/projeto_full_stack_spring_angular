@@ -1,0 +1,127 @@
+<div class="col" *ngIf="carregando">
+  <h6>Carregando...</h6>
+  <p-progressBar mode="indeterminate"></p-progressBar>
+</div>
+
+<form class="container form-group mt-3" [formGroup]="formulario">
+  <div class="form-row">
+    <h3 class="col">Relatório Diversos</h3>
+    <button class="btn btn-primary" (click)="importarBase()">
+      Importar Base
+    </button>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="nomeMunicipio">Municípios</label>
+      <ngx-select
+        [items]="listaMunicipios"
+        allowClear="true"
+        optionValueField="nome"
+        optionTextField="nome"
+        formControlName="nomeMunicipio"
+        id="nomeMunicipio"
+      ></ngx-select>
+    </div>
+    <div class="form-group col">
+      <label for="mediaPrecoCombustivel">Média de preço de venda</label>
+      <input
+        id="mediaPrecoCombustivel"
+        formControlName="mediaPrecoCombustivel"
+        class="form-control"
+      />
+    </div>
+    <div class="form-group col">
+      <label for="mediaPrecoCompraCombustivel">Média de preço de compra</label>
+      <input
+        id="mediaPrecoCompraCombustivel"
+        formControlName="mediaPrecoCompraCombustivel"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="nomeBandeira">Bandeira / Distribuidora</label>
+      <ngx-select
+        [items]="listaBandeiras"
+        allowClear="true"
+        optionValueField="nome"
+        optionTextField="nome"
+        formControlName="nomeBandeira"
+        id="nomeBandeira"
+      ></ngx-select>
+    </div>
+    <div class="form-group col">
+      <label for="mediaPrecoCombustivelBandeira">Média de preço de venda</label>
+      <input
+        id="mediaPrecoCombustivelBandeira"
+        formControlName="mediaPrecoCombustivelBandeira"
+        class="form-control"
+      />
+    </div>
+    <div class="form-group col">
+      <label for="mediaPrecoCompraCombustivelBandeira"
+        >Média de preço de compra</label
+      >
+      <input
+        id="mediaPrecoCompraCombustivelBandeira"
+        formControlName="mediaPrecoCompraCombustivelBandeira"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary col" (click)="pegarDadosPorDistribuidora()">
+      Pegar dados agrupados por Distribuidora
+    </button>
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary col" (click)="pegarDadosPorData()">
+      Pegar dados agrupados por Data (Desc)
+    </button>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col">
+      <label for="nomeRegioes">Regiões</label>
+      <ngx-select
+        [items]="listaRegioes"
+        allowClear="true"
+        optionValueField="nome"
+        optionTextField="nome"
+        formControlName="nomeRegiao"
+        id="nomeRegioes"
+      ></ngx-select>
+    </div>
+  </div>
+</form>
+
+<div class="container">
+  <table class="table col">
+    <thead>
+      <tr>
+        <th scope="col">Cliente</th>
+        <th scope="col">Cod Inst.</th>
+        <th scope="col">Município</th>
+        <th scope="col">S. Município</th>
+        <th scope="col">S. Região</th>
+        <th scope="col">Bandeira</th>
+        <th scope="col">Data</th>
+        <th scope="col">Prc. Compra</th>
+        <th scope="col">Prc. Venda</th>
+        <th scope="col">Produto</th>
+        <th scope="col">Unid. Medida</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let linha of items">
+        <td *ngFor="let col of linha">
+          {{ col }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
