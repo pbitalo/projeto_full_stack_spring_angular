@@ -29,8 +29,8 @@ public interface VendaService {
 	
 	List<String> findByBandeira();
 	
-	List<Object> findAllPorBandeira(String nomeBandeira);
+	Page<Object> findAllPorBandeira(PageRequest pageRequest, String nomeBandeira);
 	
-	List<Object> findAllPorDataColeta(String tipo);
+	Page<Object> findAllPorDataColeta(PageRequest pageRequest);
 
 }

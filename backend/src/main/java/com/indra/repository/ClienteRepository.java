@@ -35,15 +35,10 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 	
 	@Query(value = "SELECT ( SUM(VALOR_COMPRA) / COUNT(*) ) AS media FROM cliente JOIN venda ON cliente.id=venda.cliente_id WHERE venda.bandeira LIKE %:nomeBandeira%", nativeQuery = true)
 	BigDecimal findMediaCompraCombustivelPorBandeira(@Param("nomeBandeira") String nomeBandeira);	
-	
-	@Query(value = "SELECT \r\n" + 
-			"CLIENTE.NOME AS NOME_CLIENTE , CLIENTE.INSTALACAO_CODIGO , CLIENTE.MUNICIPIO ,CLIENTE.SIGLA_ESTADO , CLIENTE.SIGLA_REGIAO , VENDA.BANDEIRA ,  VENDA.DATA_COLETA , VENDA.VALOR_COMPRA , VENDA.VALOR_VENDA , PRODUTO.NOME AS NOME_PRODUTO , PRODUTO.UNIDADE_MEDIDA\r\n" + 
-			"FROM CLIENTE\r\n" + 
-			"JOIN VENDA\r\n" + 
-			" ON CLIENTE.ID=VENDA.CLIENTE_ID \r\n" + 
-			"JOIN PRODUTO\r\n" + 
-			" ON VENDA.PRODUTO_ID=PRODUTO.ID\r\n" + 
-			"WHERE CLIENTE.SIGLA_REGIAO LIKE %:siglaRegiao%", nativeQuery = true)
-	List<Object> findDataPorRegioes(@Param("siglaRegiao") String siglaRegiao);	
+
+	@Query(value = "SELECT c.NOME AS NOME_CLIENTE , c.INSTALACAO_CODIGO , c.MUNICIPIO , c.SIGLA_ESTADO , c.SIGLA_REGIAO , v.BANDEIRA ,  v.DATA_COLETA , v.VALOR_COMPRA , v.VALOR_VENDA , p.NOME AS NOME_PRODUTO , p.UNIDADE_MEDIDA FROM CLIENTE c JOIN VENDA v on c.id=v.cliente_id JOIN PRODUTO p on v.produto_id=p.id WHERE c.SIGLA_REGIAO LIKE %:siglaRegiao%", 
+		   countQuery = "SELECT COUNT(*) FROM CLIENTE c JOIN VENDA v on c.id=v.cliente_id JOIN PRODUTO p on v.produto_id=p.id WHERE c.SIGLA_REGIAO LIKE %:siglaRegiao%", 
+		   nativeQuery = true)	
+	Page<Object> findDataPorRegioes(Pageable pageable, @Param("siglaRegiao") String siglaRegiao);		
 	
 }

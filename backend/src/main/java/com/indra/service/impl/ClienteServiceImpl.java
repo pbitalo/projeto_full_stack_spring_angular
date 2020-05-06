@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.indra.dto.ClienteDTO;
 import com.indra.entity.Cliente;
-import com.indra.entity.Venda;
-//import com.indra.entity.Regiao;
 import com.indra.repository.ClienteRepository;
 import com.indra.service.ClienteService;
 
@@ -26,12 +24,7 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente save(Cliente cliente) {
 		return repository.save(cliente);
 	}
-/*
-	@Override
-	public List<Cliente> findAll() {
-		return repository.findAll();
-	}
-	*/
+
 	@Override
 	public Page<Cliente> findAll(PageRequest pageRequest) {
 		return repository.findAll(pageRequest);
@@ -101,9 +94,8 @@ public class ClienteServiceImpl implements ClienteService {
 	}
   
 	@Override
-	public List<Object> findAllPorRegiao(String siglaRegiao) {
-		List<Object> regioes = repository.findDataPorRegioes(siglaRegiao);
-		return regioes;
+	public  Page<Object> findAllPorRegiao(PageRequest pageRequest, String siglaRegiao) {
+		return repository.findDataPorRegioes(pageRequest, siglaRegiao);
 	}
 
 }

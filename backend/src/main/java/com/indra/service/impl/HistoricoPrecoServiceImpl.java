@@ -1,6 +1,5 @@
 package com.indra.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.indra.entity.HistoricoPreco;
 import com.indra.entity.Produto;
-import com.indra.entity.Venda;
 import com.indra.repository.HistoricoPrecoRepository;
 import com.indra.repository.ProdutoRepository;
 import com.indra.service.HistoricoPrecoService;

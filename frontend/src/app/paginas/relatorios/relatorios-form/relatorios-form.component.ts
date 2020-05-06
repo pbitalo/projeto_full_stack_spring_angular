@@ -18,6 +18,8 @@ export class RelatoriosFormComponent extends CrudComponent {
   listaRegioes: String[];
   listaBandeiras: String[];
   carregando = false;
+  filtroAtivo = '';
+
   constructor(
     protected servicos: RelatoriosService,
     protected injector: Injector,
@@ -49,9 +51,35 @@ export class RelatoriosFormComponent extends CrudComponent {
     });
     this.formulario.get('nomeRegiao').valueChanges.subscribe((valor) => {
       if (valor) {
+        this.config.currentPage = 1;
+        this.filtroAtivo = 'regiao';
         this.pegarDadosPorRegiao(valor);
       }
     });
+  }
+
+  mudarPagina(event) {
+    console.log('mudarPagina event = ', event);
+    console.log('mudarPagina this.filtroAtivo = ', this.filtroAtivo);
+    this.config.currentPage = event;
+
+    switch (this.filtroAtivo) {
+      case 'distribuidora':
+        console.log('Case distribuidora');
+        this.pegarDadosPorDistribuidora();
+        break;
+      case 'data':
+        console.log('Case data');
+        this.pegarDadosPorData();
+        break;
+      case 'regiao':
+        console.log('Case regiao');
+        this.pegarDadosPorRegiao(this.formulario.getRawValue().nomeRegiao);
+        break;
+      default:
+        console.log(`Opção inexistente`);
+        break;
+    }
   }
 
   importarBase() {
@@ -88,9 +116,13 @@ export class RelatoriosFormComponent extends CrudComponent {
 
   pegarDadosPorRegiao(siglaRegiao: string) {
     this.regiaoService
-      .pegarRecursoAlternativo({ siglaRegiao }, 'regiao/buscarDadosPorRegiao')
+      .pegarRecursoAlternativo(
+        { siglaRegiao, pag: this.config.currentPage },
+        'regiao/buscarDadosPorRegiao'
+      )
       .subscribe((result) => {
-        this.items = result.splice(0, 40);
+        this.items = result.data.content as Array<any>;
+        this.config.totalItems = +result.data.totalElements;
       });
   }
 
@@ -116,22 +148,41 @@ export class RelatoriosFormComponent extends CrudComponent {
       });
   }
 
-  pegarDadosPorDistribuidora() {
+  pegarDadosPorDistribuidora(viaBotao?: boolean) {
+    if (viaBotao) {
+      this.config.currentPage = 1;
+      this.filtroAtivo = 'distribuidora';
+    }
+
     this.servico
       .pegarRecursoAlternativo(
-        { nomeBandeira: this.formulario.getRawValue().nomeBandeira },
+        {
+          nomeBandeira: this.formulario.getRawValue().nomeBandeira,
+          pag: this.config.currentPage,
+        },
         'bandeira/buscarDadosPorBandeira'
       )
       .subscribe((result) => {
-        this.items = result;
+        this.items = result.data.content as Array<any>;
+        this.config.totalItems = +result.data.totalElements;
       });
   }
 
-  pegarDadosPorData() {
+  pegarDadosPorData(viaBotao?: boolean) {
+    if (viaBotao) {
+      this.config.currentPage = 1;
+      this.filtroAtivo = 'data';
+    }
+
     this.servico
-      .pegarRecursoAlternativo({ tipo: 'DESC' }, 'bandeira/buscarDadosPorData')
+      .pegarRecursoAlternativo(
+        { tipo: 'DESC', pag: this.config.currentPage },
+        'bandeira/buscarDadosPorData'
+      )
       .subscribe((result) => {
-        this.items = result;
+        // this.items = result;
+        this.items = result.data.content as Array<any>;
+        this.config.totalItems = +result.data.totalElements;
       });
   }
 

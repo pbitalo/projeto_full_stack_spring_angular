@@ -74,12 +74,15 @@
   </div>
 
   <div class="form-group">
-    <button class="btn btn-primary col" (click)="pegarDadosPorDistribuidora()">
+    <button
+      class="btn btn-primary col"
+      (click)="pegarDadosPorDistribuidora(true)"
+    >
       Pegar dados agrupados por Distribuidora
     </button>
   </div>
   <div class="form-group">
-    <button class="btn btn-primary col" (click)="pegarDadosPorData()">
+    <button class="btn btn-primary col" (click)="pegarDadosPorData(true)">
       Pegar dados agrupados por Data (Desc)
     </button>
   </div>
@@ -117,11 +120,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let linha of items">
+      <tr *ngFor="let linha of items | paginate: config">
         <td *ngFor="let col of linha">
           {{ col }}
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div class="text-center">
+  <pagination-controls (pageChange)="mudarPagina($event)"></pagination-controls>
 </div>

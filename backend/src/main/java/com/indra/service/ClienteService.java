@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 
 import com.indra.dto.ClienteDTO;
 import com.indra.entity.Cliente;
-import com.indra.entity.Venda;
 
 public interface ClienteService {
 	
@@ -19,7 +18,6 @@ public interface ClienteService {
 	
 	void deleteById(Long id);
 	
-	//List<Cliente> findAll();
 	Page<Cliente> findAll(PageRequest pageRequest);
 	
 	Optional<Cliente> findById(Long id);
@@ -38,6 +36,6 @@ public interface ClienteService {
 	
 	List<String> findByRegioes();
 	
-	List<Object> findAllPorRegiao(String siglaRegiao);
+	Page<Object> findAllPorRegiao(PageRequest pageRequest, String siglaRegiao);
 
 }

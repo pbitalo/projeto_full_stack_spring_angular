@@ -76,15 +76,13 @@ public class VendaServiceImpl implements VendaService {
 	}
 	
 	@Override 
-	public List<Object> findAllPorBandeira(String nomeBandeira) {
-		List<Object> bandeiras = repository.findAllPorBandeira(nomeBandeira);
-		return bandeiras;
+	public Page<Object> findAllPorBandeira(PageRequest pageRequest, String nomeBandeira) {
+		return repository.findAllPorBandeira(nomeBandeira , pageRequest);
 	}
 	
 	@Override 
-	public List<Object> findAllPorDataColeta(String tipo) {
-		List<Object> listaPorData = repository.findAllPorDataColeta(tipo);
-		return listaPorData;
+	public Page<Object> findAllPorDataColeta(PageRequest pageRequest) {
+		return repository.findAllPorDataColeta(pageRequest);
 	}	
 	
 	@Override

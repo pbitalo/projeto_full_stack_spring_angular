@@ -5,13 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.indra.response.Response;
 import com.indra.service.ClienteService;
 import com.indra.service.VendaService;
 
@@ -26,8 +32,10 @@ public class BandeiraController {
 	private VendaService service;
 	
 	@Autowired
-	private ClienteService serviceCliente;	
+	private ClienteService serviceCliente;
 	
+	@Value("${paginacao.items_por_pagina}")
+	private int qtdPorPagina;	
 
 	@GetMapping
 	public ResponseEntity<List<String>> buscarTodos() {
@@ -35,22 +43,36 @@ public class BandeiraController {
 		return new ResponseEntity<List<String>>(regioes, HttpStatus.OK);
 	}
 	
-	
 	@GetMapping(path = "buscarDadosPorBandeira")
-	public ResponseEntity<List<Object>> buscarTodos(
-			@Parameter(description = "Filtrar dados por bandeira", required = true) String nomeBandeira) {
+	public ResponseEntity<Response<Page<Object>>> buscarTodos(
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir,			
+			@Parameter(description = "Filtrar dados por bandeira", required = false) String nomeBandeira) {
 		
-		List<Object> dadosPorBandeira = service.findAllPorBandeira(nomeBandeira);
-		return new ResponseEntity<List<Object>>(dadosPorBandeira, HttpStatus.OK);
+		Response<Page<Object>> response = new Response<Page<Object>>();
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		
+		Page<Object> vp = service.findAllPorBandeira(pageRequest, nomeBandeira);
+		response.setData(vp);
+		return ResponseEntity.ok(response);		
 		
 	}		
 	
 	
 	@GetMapping(path = "buscarDadosPorData")
-	public ResponseEntity<List<Object>> buscarPorData(
-			@Parameter(description = "Filtrar dados por data (ASC ou DESC)", required = true) String tipo) {
-		List<Object> dadosPorData = service.findAllPorDataColeta(tipo);
-		return new ResponseEntity<List<Object>>(dadosPorData, HttpStatus.OK);
+	public ResponseEntity<Response<Page<Object>>> buscarPorData(
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir) {
+		
+		Response<Page<Object>> response = new Response<Page<Object>>();
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		
+		Page<Object> dadosPorData = service.findAllPorDataColeta(pageRequest);
+		response.setData(dadosPorData);
+		return ResponseEntity.ok(response);				
+		
 	}
 	
 	
@@ -64,7 +86,6 @@ public class BandeiraController {
 		return new ResponseEntity<List<String>>(listaRetorno, HttpStatus.OK);
 		
 	}	
-	
 	
 	@GetMapping(path = "buscarMediaPrecoVenda")
 	public ResponseEntity<List<String>> buscarMediaPrecoCompraVenda(

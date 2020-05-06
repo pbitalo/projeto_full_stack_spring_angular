@@ -1,6 +1,5 @@
 package com.indra.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.indra.dto.HistoricoPrecoDTO;
 import com.indra.entity.HistoricoPreco;
-import com.indra.entity.Venda;
 import com.indra.response.Response;
 import com.indra.service.HistoricoPrecoService;
 

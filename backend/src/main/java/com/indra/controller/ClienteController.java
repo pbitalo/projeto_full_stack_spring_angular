@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.indra.dto.ClienteDTO;
 import com.indra.entity.Cliente;
-import com.indra.entity.Venda;
 import com.indra.response.Response;
 import com.indra.service.ClienteService;
 
@@ -100,27 +99,6 @@ public class ClienteController {
 		return ResponseEntity.notFound().build();
 		
 	}	
-/*
-	@GetMapping
-	public ResponseEntity<List<Cliente>> buscarTodos(
-			@Parameter(description = "Filtro para buscar por nome do cliente", required = false) String nomeCliente) {
-		
-		if (nomeCliente == null) {
-			List<Cliente> vp = service.findAll();
-			return new ResponseEntity<List<Cliente>>(vp, HttpStatus.OK);
-		} else{
-			
-			Optional<Cliente> cliente = service.findByNome(nomeCliente);
-			
-			if ( cliente.isPresent() ) {
-				List<Cliente> nLista = new ArrayList<>();
-				nLista.add(cliente.get());
-				return new ResponseEntity<List<Cliente>>(nLista, HttpStatus.OK);
-			}			
-		}
-		return ResponseEntity.notFound().build();
-	}
-	*/
 	
 	@GetMapping(path="buscarPorNome")
 	public ResponseEntity<List<Cliente>> buscarClientePorNome(
