@@ -22,7 +22,7 @@ export class ProdutosFormComponent extends CrudComponent {
 
   pegarDados() {
     this.servicos.pegarDados().subscribe((result) => {
-      this.items = result as Array<ProdutoModelo>;
+      this.items = result.data as Array<ProdutoModelo>;
     });
   }
 

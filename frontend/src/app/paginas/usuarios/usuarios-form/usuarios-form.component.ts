@@ -22,8 +22,14 @@ export class UsuariosFormComponent extends CrudComponent {
 
   pegarDados() {
     this.servicos.pegarDados().subscribe((result) => {
-      this.items = result as Array<UsuarioModelo>;
+      this.items = result.data.content as Array<UsuarioModelo>;
+      this.config.totalItems = +result.data.totalElements;
     });
+  }
+
+  mudarPagina(event) {
+    this.config.currentPage = event;
+    this.pegarDados();
   }
 
   criarFormulario() {

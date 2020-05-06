@@ -1,7 +1,9 @@
 package com.indra.service;
 
-import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.indra.dto.UserDTO;
 import com.indra.entity.User;
@@ -14,8 +16,8 @@ public interface UserService {
 	
 	void deleteById(Long id);
 	
-	List<User> findAll();
+	Page<User> findAll(PageRequest pageRequest);
 	
-	Optional<User> findById(Long id);	
+	Optional<User> findById(Long id);
 
 }

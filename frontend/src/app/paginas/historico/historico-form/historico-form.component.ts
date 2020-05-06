@@ -37,7 +37,7 @@ export class HistoricoFormComponent extends CrudComponent {
   pegarDados() {
     this.pegarHistorico();
     this.servicoProduto.pegarDados().subscribe((result) => {
-      this.listaProdutos = result as Array<ProdutoModelo>;
+      this.listaProdutos = result.data as Array<ProdutoModelo>;
     });
   }
 

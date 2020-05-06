@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -94,13 +95,15 @@ public class ProdutoController {
 
 	
 	@GetMapping
-	public ResponseEntity<List<Produto>> buscarTodos(
+	public ResponseEntity<Response<List<Produto>>> buscarTodos(
 			@Parameter(description = "Filtro para buscar por nome do produto", required = false) String nomeProduto ) {
+		
+		Response<List<Produto>> response = new Response<List<Produto>>();
 		
 		if (nomeProduto == null) {
 			
-			List<Produto> vp = service.findAll();
-			return new ResponseEntity<List<Produto>>(vp, HttpStatus.OK);
+			response.setData(service.findAll());
+			return ResponseEntity.ok(response);
 			
 		} else {
 			
@@ -110,8 +113,8 @@ public class ProdutoController {
 				
 				List<Produto> nLista = new ArrayList<>();
 				nLista.add(produto.get());
-				
-				return new ResponseEntity<List<Produto>>(nLista, HttpStatus.OK);
+				response.setData(nLista);
+				return ResponseEntity.ok(response);
 				
 			}			
 			

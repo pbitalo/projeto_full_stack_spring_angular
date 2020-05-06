@@ -47,17 +47,15 @@ public class VendaServiceImpl implements VendaService {
 		venda.setValorCompra(dto.getValorCompra());
 		venda.setValorVenda(dto.getValorVenda());
 		venda.setBandeira(dto.getBandeira());
-		
 		venda.setCliente(clienteRepository.getOne(dto.getClienteId()));
 		venda.setProduto(produtoRepository.getOne(dto.getProdutoId()));
-		
 		return venda;
+		
 	}
 
 	@Override
 	public Optional<Venda> findById(Long id) {
-		Optional<Venda> venda = repository.findById(id);
-		return venda;
+		return repository.findById(id);
 	}
 
 	@Override
@@ -87,8 +85,7 @@ public class VendaServiceImpl implements VendaService {
 	
 	@Override
 	public List<String> findByBandeira() {
-		List<String> bandeira = repository.findByBandeira();
-		return bandeira;
+		return repository.findByBandeira();
 	}				
 	
 }

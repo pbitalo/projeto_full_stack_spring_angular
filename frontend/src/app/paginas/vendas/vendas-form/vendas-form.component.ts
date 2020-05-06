@@ -57,7 +57,7 @@ export class VendasFormComponent extends CrudComponent {
       this.listaClientes = result.data.content as Array<ClienteModelo>;
     });
     this.servicoProduto.pegarDados().subscribe((result) => {
-      this.listaProdutos = result as Array<ProdutoModelo>;
+      this.listaProdutos = result.data as Array<ProdutoModelo>;
     });
   }
 

@@ -34,38 +34,33 @@ public class ClienteServiceImpl implements ClienteService {
 	public Cliente update(Long id, ClienteDTO dto) {
 		
 		Cliente cliente = repository.getOne(id);
-		
 		cliente.setNome(dto.getNome());
 		cliente.setInstalacaoCodigo(dto.getInstalacaoCodigo());
 		cliente.setSiglaEstado(dto.getSiglaEstado());
 		cliente.setSiglaRegiao(dto.getSiglaRegiao());
 		cliente.setMunicipio(dto.getMunicipio());
-		
 		return cliente;
+		
 	}
 
 	@Override
 	public Optional<Cliente> findById(Long id) {
-		Optional<Cliente> cliente = repository.findById(id);
-		return cliente;
+		return repository.findById(id);
 	}
 	
 	@Override
 	public Optional<Cliente> findByNome(String nome) {
-		Optional<Cliente> cliente = repository.findByNomeEquals(nome);
-		return cliente;
+		return repository.findByNomeEquals(nome);
 	}	
 	
 	@Override
 	public List<String> findByMunicipos() {
-		List<String> municipios = repository.findByMunicipos();
-		return municipios;
+		return repository.findByMunicipos();
 	}		
 	
 	@Override
 	public List<String> findByRegioes() {
-		List<String> regioes = repository.findByRegioes();
-		return regioes;
+		return repository.findByRegioes();
 	}			
 	
 	@Override

@@ -34,8 +34,7 @@ public class HistoricoPrecoServiceImpl implements HistoricoPrecoService {
 	
 	@Override
 	public Optional<HistoricoPreco> findById(Long id) {
-		Optional<HistoricoPreco> historicoPreco = repository.findById(id);
-		return historicoPreco;
+		return repository.findById(id);
 	}
 	
 	@Override

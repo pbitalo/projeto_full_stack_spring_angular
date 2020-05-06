@@ -1,12 +1,15 @@
 package com.indra.controller;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.indra.dto.UserDTO;
@@ -34,6 +38,8 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
+	@Value("${paginacao.items_por_pagina}")
+	private int qtdPorPagina;		
 	
 	@PostMapping
 	@Transactional
@@ -93,11 +99,19 @@ public class UserController {
 
 	
 	@GetMapping
-	public ResponseEntity<List<User>> buscarTodos() {
-		List<User> vp = service.findAll();
-		return new ResponseEntity<List<User>>(vp, HttpStatus.OK);
+	public ResponseEntity<Response<Page<User>>> buscarTodos(
+			@RequestParam(value = "pag", defaultValue = "0") int pag,
+			@RequestParam(value = "ord", defaultValue = "id") String ord,
+			@RequestParam(value = "dir", defaultValue = "DESC") String dir				
+			) {
+		
+		Response<Page<User>> response = new Response<Page<User>>();
+		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
+		Page<User> users = service.findAll(pageRequest);
+		response.setData(users);
+		return ResponseEntity.ok(response);
+		
 	}
-	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Response<UserDTO>> buscarPorId(@PathVariable Long id) {

@@ -1,4 +1,4 @@
-package com.indra.repository;
+/*package com.indra.repository;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -60,3 +60,4 @@ public class UserRepositoryTest {
 	
 
 }
+*/

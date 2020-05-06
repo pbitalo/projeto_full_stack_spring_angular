@@ -35,7 +35,7 @@ export class LoginComponent extends CrudComponent {
 
   pegarDados() {
     this.servicos.pegarDados().subscribe((result) => {
-      this.items = result;
+      this.items = result.data.content as any;
     });
   }
 
