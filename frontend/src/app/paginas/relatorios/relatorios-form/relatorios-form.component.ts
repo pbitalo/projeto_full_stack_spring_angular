@@ -59,8 +59,6 @@ export class RelatoriosFormComponent extends CrudComponent {
   }
 
   mudarPagina(event) {
-    console.log('mudarPagina event = ', event);
-    console.log('mudarPagina this.filtroAtivo = ', this.filtroAtivo);
     this.config.currentPage = event;
 
     switch (this.filtroAtivo) {
@@ -107,10 +105,10 @@ export class RelatoriosFormComponent extends CrudComponent {
   pegarDados() {
     this.pegarMediaPrecoComb();
     this.regiaoService.pegarDados().subscribe((result) => {
-      this.listaRegioes = result as Array<String>;
+      this.listaRegioes = result.data as Array<String>;
     });
     this.servicoBandeira.pegarDados().subscribe((result) => {
-      this.listaBandeiras = result as Array<String>;
+      this.listaBandeiras = result.data as Array<String>;
     });
   }
 
@@ -129,10 +127,10 @@ export class RelatoriosFormComponent extends CrudComponent {
   pegarMediaPrecoComb(nomeMunicipio?: string) {
     this.servicoMunicipio.pegarDados({ nomeMunicipio }).subscribe((result) => {
       if (!nomeMunicipio) {
-        this.listaMunicipios = result as Array<String>;
+        this.listaMunicipios = result.data as Array<String>;
       } else {
         this.formulario.patchValue({
-          mediaPrecoCombustivel: (+result[0]).toFixed(4),
+          mediaPrecoCombustivel: (+result.data[0]).toFixed(4),
         });
       }
     });
@@ -180,7 +178,6 @@ export class RelatoriosFormComponent extends CrudComponent {
         'bandeira/buscarDadosPorData'
       )
       .subscribe((result) => {
-        // this.items = result;
         this.items = result.data.content as Array<any>;
         this.config.totalItems = +result.data.totalElements;
       });
@@ -194,7 +191,7 @@ export class RelatoriosFormComponent extends CrudComponent {
       )
       .subscribe((result) => {
         this.formulario.patchValue({
-          mediaPrecoCompraCombustivelBandeira: (+result[0]).toFixed(4),
+          mediaPrecoCompraCombustivelBandeira: (+result.data[0]).toFixed(4),
         });
       });
     this.servico
@@ -204,7 +201,7 @@ export class RelatoriosFormComponent extends CrudComponent {
       )
       .subscribe((result) => {
         this.formulario.patchValue({
-          mediaPrecoCombustivelBandeira: (+result[0]).toFixed(4),
+          mediaPrecoCombustivelBandeira: (+result.data[0]).toFixed(4),
         });
       });
   }

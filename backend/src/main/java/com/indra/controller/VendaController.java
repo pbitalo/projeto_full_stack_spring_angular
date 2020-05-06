@@ -144,18 +144,16 @@ public class VendaController {
 		venda.setBandeira(dto.getBandeira());
 		venda.setCliente(service.findByClienteId(dto.getClienteId()));
 		venda.setProduto(service.findByProdutoId(dto.getProdutoId()));
-		
 		return venda;
+		
 	}
 	
 	private HistoricoPreco convertVendaDtoToHistoricoPrecoDto(VendaDTO vendaDto) {
 		
 		HistoricoPreco histPrecodto = new HistoricoPreco();
-		
 		histPrecodto.setValorVenda(vendaDto.getValorVenda());
 		histPrecodto.setProduto((service.findByProdutoId(vendaDto.getProdutoId())));
 		histPrecodto.setDataColeta(LocalDateTime.now());
-		
 		return histPrecodto;
 		
 	}
@@ -170,8 +168,8 @@ public class VendaController {
 		dto.setBandeira(venda.getBandeira());
 		dto.setClienteId(venda.getCliente().getId());
 		dto.setProdutoId(venda.getProduto().getId());
-
 		return dto;
+		
 	}
 	
 

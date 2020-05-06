@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +32,11 @@ public class RegiaoController {
 	private int qtdPorPagina;	
 	
 	@GetMapping
-	public ResponseEntity<List<String>> buscarTodos() {
+	public ResponseEntity<Response<List<String>>> buscarTodos() {
+		Response<List<String>> response = new Response<List<String>>();
 		List<String> regioes = service.findByRegioes();
-		return new ResponseEntity<List<String>>(regioes, HttpStatus.OK);
+		response.setData(regioes);
+		return ResponseEntity.ok(response);		
 	}
 	
 	@GetMapping(path = "buscarDadosPorRegiao")

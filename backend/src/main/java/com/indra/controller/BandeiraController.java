@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +37,11 @@ public class BandeiraController {
 	private int qtdPorPagina;	
 
 	@GetMapping
-	public ResponseEntity<List<String>> buscarTodos() {
+	public ResponseEntity<Response<List<String>>> buscarTodos() {
+		Response<List<String>> response = new Response<List<String>>();
 		List<String> regioes = service.findByBandeira();
-		return new ResponseEntity<List<String>>(regioes, HttpStatus.OK);
+		response.setData(regioes);
+		return ResponseEntity.ok(response);		
 	}
 	
 	@GetMapping(path = "buscarDadosPorBandeira")
@@ -52,7 +53,6 @@ public class BandeiraController {
 		
 		Response<Page<Object>> response = new Response<Page<Object>>();
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-		
 		Page<Object> vp = service.findAllPorBandeira(pageRequest, nomeBandeira);
 		response.setData(vp);
 		return ResponseEntity.ok(response);		
@@ -68,7 +68,6 @@ public class BandeiraController {
 		
 		Response<Page<Object>> response = new Response<Page<Object>>();
 		PageRequest pageRequest = PageRequest.of(pag, this.qtdPorPagina, Direction.valueOf(dir), ord);
-		
 		Page<Object> dadosPorData = service.findAllPorDataColeta(pageRequest);
 		response.setData(dadosPorData);
 		return ResponseEntity.ok(response);				
@@ -77,24 +76,28 @@ public class BandeiraController {
 	
 	
 	@GetMapping(path = "buscarMediaPrecoCompra")
-	public ResponseEntity<List<String>> buscarMediaPrecoCompra(
+	public ResponseEntity<Response<List<String>>> buscarMediaPrecoCompra(
 			@Parameter(description = "Filtro para buscar a média preço compra combustível", required = false) String nomeBandeira) {
 		
+		Response<List<String>> response = new Response<List<String>>();
 		BigDecimal valorMedia = serviceCliente.buscarMediaPrecoCompraPorBandeira(nomeBandeira);
 		List<String> listaRetorno = new ArrayList<String>();
 		listaRetorno.add(valorMedia+"");
-		return new ResponseEntity<List<String>>(listaRetorno, HttpStatus.OK);
+		response.setData(listaRetorno);
+		return ResponseEntity.ok(response);
 		
 	}	
 	
 	@GetMapping(path = "buscarMediaPrecoVenda")
-	public ResponseEntity<List<String>> buscarMediaPrecoCompraVenda(
+	public ResponseEntity<Response<List<String>>> buscarMediaPrecoCompraVenda(
 			@Parameter(description = "Filtro para buscar a média preço venda combustível", required = false) String nomeBandeira) {
 		
+		Response<List<String>> response = new Response<List<String>>();
 		BigDecimal valorMedia = serviceCliente.buscarMediaPrecoPorBandeira(nomeBandeira);
 		List<String> listaRetorno = new ArrayList<String>();
 		listaRetorno.add(valorMedia+"");
-		return new ResponseEntity<List<String>>(listaRetorno, HttpStatus.OK);
+		response.setData(listaRetorno);
+		return ResponseEntity.ok(response);
 		
 	}		
 

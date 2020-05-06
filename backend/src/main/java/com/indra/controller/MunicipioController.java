@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.indra.response.Response;
 import com.indra.service.ClienteService;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,18 +27,23 @@ public class MunicipioController {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<String>> buscarTodos(
+	public ResponseEntity<Response<List<String>>> buscarTodos(
 			@Parameter(description = "Filtro para buscar a média preço combustível", required = false) String nomeMunicipio ) {
+		
+		Response<List<String>> response = new Response<List<String>>();
 		
 		if (nomeMunicipio == null) {
 			List<String> municipios = service.findByMunicipos();
-			return new ResponseEntity<List<String>>(municipios, HttpStatus.OK);
+			response.setData(municipios);
+			return ResponseEntity.ok(response);			
 		} else {
 			BigDecimal valorMedia = service.buscarMediaPreco(nomeMunicipio);
 			List<String> listaRetorno = new ArrayList<String>();
 			listaRetorno.add(valorMedia+"");
-			return new ResponseEntity<List<String>>(listaRetorno, HttpStatus.OK);
+			response.setData(listaRetorno);
 		}
+		
+		return ResponseEntity.ok(response);
 		
 	}
 	
